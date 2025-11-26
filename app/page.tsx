@@ -5,7 +5,7 @@ import { HomeSchema } from "@/schemaOrg/homeSchema";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
-
+export const dynamic = "force-dynamic";
 export default function Home() {
   return (
     <>

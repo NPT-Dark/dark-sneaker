@@ -4,6 +4,7 @@ import { BrandSchema } from "@/schemaOrg/brandSchema";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
+export const dynamic = "force-dynamic";
 async function fetchSneakerByBrand({
   brand,
   page,
@@ -13,75 +14,29 @@ async function fetchSneakerByBrand({
 }) {
   const params = new URLSearchParams();
   params.set("brand", brand);
-  params.set("page", page.toString());
+  params.set("page", page);
   params.set("limit", "10");
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/sneaker?${params.toString()}`
-  );
-  return res.json();
-}
 
-// 🔹 Danh sách brand hợp lệ — nên dùng enum hoặc const array
-const BRANDS = ["nike", "adidas", "puma"] as const;
-type Brand = (typeof BRANDS)[number];
+  try {
+    const url = `${
+      process.env.NEXT_PUBLIC_SITE_URL
+    }/api/sneaker?${params.toString()}`;
+    const res = await fetch(url, { next: { revalidate: 60 } }); // ISR nếu bạn deploy rồi
 
-// 🔹 Thông tin chi tiết từng brand — dùng để generate metadata & content
-const BRAND_INFO: Record<
-  Brand,
-  {
-    name: string;
-    slogan: string;
-    description: string;
-    keywords: string[];
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("❌ Fetch sneakers failed:", error);
+    // Trả fallback hợp lý — ví dụ mảng rỗng + meta giả
+    return {
+      data: [],
+      meta: { totalPages: 1, totalItems: 0 },
+    };
   }
-> = {
-  nike: {
-    name: "Nike",
-    slogan: "Just Do It.",
-    description:
-      "Explore Nike sneakers at Dark Sneaker: Air Force 1, Air Jordan, Dunk Low, Air Max & exclusive collaborations. 100% authentic, fast shipping.",
-    keywords: [
-      "Nike sneakers",
-      "Nike Air Force 1",
-      "Nike Air Jordan",
-      "Nike Dunk Low",
-      "Nike SB",
-      "buy Nike online",
-      "Nike limited edition",
-      "giày Nike chính hãng",
-    ],
-  },
-  adidas: {
-    name: "Adidas",
-    slogan: "Impossible Is Nothing.",
-    description:
-      "Shop Adidas sneakers: Ultraboost, Samba, Gazelle, Yeezy (restock), Forum & more. Authentic stock, best prices, Vietnam delivery.",
-    keywords: [
-      "Adidas sneakers",
-      "Adidas Ultraboost",
-      "Adidas Samba",
-      "Adidas Gazelle",
-      "Adidas Yeezy",
-      "Adidas Forum",
-      "giày Adidas chính hãng",
-    ],
-  },
-  puma: {
-    name: "Puma",
-    slogan: "Forever Faster.",
-    description:
-      "Discover Puma sneakers: RS-X, Suede, Clyde, Mayze & collaborations. Stylish, sporty, and affordable — all 100% authentic at Dark Sneaker.",
-    keywords: [
-      "Puma sneakers",
-      "Puma RS-X",
-      "Puma Suede",
-      "Puma Clyde",
-      "Puma Mayze",
-      "giày Puma chính hãng",
-      "Puma streetwear",
-    ],
-  },
-};
+}
 
 // 🔹 ✅ generateMetadata — chạy trên server
 export async function generateMetadata({
@@ -93,6 +48,67 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const paramsAsync = await params;
   const searchParamsAsync = await searchParams;
+  // 🔹 Danh sách brand hợp lệ — nên dùng enum hoặc const array
+  const BRANDS = ["nike", "adidas", "puma"] as const;
+  type Brand = (typeof BRANDS)[number];
+
+  // 🔹 Thông tin chi tiết từng brand — dùng để generate metadata & content
+  const BRAND_INFO: Record<
+    Brand,
+    {
+      name: string;
+      slogan: string;
+      description: string;
+      keywords: string[];
+    }
+  > = {
+    nike: {
+      name: "Nike",
+      slogan: "Just Do It.",
+      description:
+        "Explore Nike sneakers at Dark Sneaker: Air Force 1, Air Jordan, Dunk Low, Air Max & exclusive collaborations. 100% authentic, fast shipping.",
+      keywords: [
+        "Nike sneakers",
+        "Nike Air Force 1",
+        "Nike Air Jordan",
+        "Nike Dunk Low",
+        "Nike SB",
+        "buy Nike online",
+        "Nike limited edition",
+        "giày Nike chính hãng",
+      ],
+    },
+    adidas: {
+      name: "Adidas",
+      slogan: "Impossible Is Nothing.",
+      description:
+        "Shop Adidas sneakers: Ultraboost, Samba, Gazelle, Yeezy (restock), Forum & more. Authentic stock, best prices, Vietnam delivery.",
+      keywords: [
+        "Adidas sneakers",
+        "Adidas Ultraboost",
+        "Adidas Samba",
+        "Adidas Gazelle",
+        "Adidas Yeezy",
+        "Adidas Forum",
+        "giày Adidas chính hãng",
+      ],
+    },
+    puma: {
+      name: "Puma",
+      slogan: "Forever Faster.",
+      description:
+        "Discover Puma sneakers: RS-X, Suede, Clyde, Mayze & collaborations. Stylish, sporty, and affordable — all 100% authentic at Dark Sneaker.",
+      keywords: [
+        "Puma sneakers",
+        "Puma RS-X",
+        "Puma Suede",
+        "Puma Clyde",
+        "Puma Mayze",
+        "giày Puma chính hãng",
+        "Puma streetwear",
+      ],
+    },
+  };
   const brandSlug = paramsAsync.brand.toLowerCase();
   const page = searchParamsAsync.page
     ? parseInt(searchParamsAsync.page, 10)
