@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   // Open Graph (Facebook, LinkedIn, etc.)
   openGraph: {
     type: "website",
-    locale: "en_US", // hoặc "vi_VN" nếu chủ yếu khách VN
+    locale: "vi_VN", // hoặc "vi_VN" nếu chủ yếu khách VN
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://dark-sneaker.vercel.app",
     siteName: "Dark Sneaker",
     title: "Dark Sneaker — Where Style Meets Sole",
