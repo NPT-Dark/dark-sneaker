@@ -5,7 +5,7 @@
       "<Image",
       "  src=\"${1:}\"",
       "  width={${2:500}}",
-      "  height={500}",
+      "  height={300}",
       "  alt=\" - dark sneaker\"",
       "  aria-label=\" - dark sneaker\"",
       "  title=\" - dark sneaker\"",
@@ -14,7 +14,7 @@
     ],
     "description": "Insert Dark Sneaker image"
   },
-    "Create Function Component": {
+  "Create Function Component": {
     "prefix": "func",
     "body": [
       "import React from 'react';",

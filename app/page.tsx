@@ -11,15 +11,15 @@ export default function Home() {
     <>
       <HomeSchema />
       <main className="flex flex-col snap-y snap-mandatory overflow-y-auto scroll-smooth px-default h-screen relative">
+        <Image
+          src="/home/banner-background.webp"
+          fill
+          alt="banner background homepage - dark sneaker"
+          aria-label="banner background homepage - dark sneaker"
+          title="banner background homepage - dark sneaker"
+          className="w-full object-cover object-center -z-10"
+        />
         <SectionHomeWrapper id="welcome">
-          <Image
-            src="/home/banner-background.webp"
-            fill
-            alt="banner background homepage - dark sneaker"
-            aria-label="banner background homepage - dark sneaker"
-            title="banner background homepage - dark sneaker"
-            className="object-cover object-center -z-10"
-          />
           <div className="grid grid-cols-2 w-full h-screen place-items-center max-md:grid-cols-1 max-md:w-full">
             <div className="space-y-3 max-w-2/3 mx-auto max-sm:max-w-full">
               <p className="font-semibold text-lg">WELCOME TO</p>
@@ -41,11 +41,11 @@ export default function Home() {
             <Image
               src="/home/sneaker-banner.webp"
               width={500}
-              height={500}
+              height={300}
               alt="sneaker banner homepage - dark sneaker"
               aria-label="sneaker banner homepage - dark sneaker"
               title="sneaker banner homepage - dark sneaker"
-              className="object-contain object-center drop-shadow-2xl drop-shadow-fuchsia-300 max-w-2/3 max-md:hidden"
+              className="w-auto object-contain object-center drop-shadow-2xl drop-shadow-fuchsia-300 max-w-2/3 max-md:hidden"
               priority
             />
           </div>

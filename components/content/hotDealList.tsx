@@ -11,10 +11,24 @@ export default function HotDealList({
 }: {
   listSneaker: Sneaker[];
 }): React.ReactNode {
+  const [slidesToShow, setSlidesToShow] = React.useState(4);
+  const updateSlides = () => {
+    const width = window.innerWidth;
+    if (!width || width === 0) return setSlidesToShow(4);
+    if (width >= 1280) setSlidesToShow(4);
+    else if (width >= 768) setSlidesToShow(2);
+    else setSlidesToShow(1);
+  };
+
+  React.useEffect(() => {
+    updateSlides(); // chạy khi load
+    window.addEventListener("resize", updateSlides);
+    return () => window.removeEventListener("resize", updateSlides);
+  }, []);
   const settings: Settings = {
     dots: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow,
     slidesToScroll: 1,
     lazyLoad: "ondemand",
     infinite: true,

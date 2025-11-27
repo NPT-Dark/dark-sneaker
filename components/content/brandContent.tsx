@@ -16,11 +16,12 @@ export default function BrandContent(): React.ReactNode {
         >
           <Image
             src={`/${category}-icon.svg`}
-            width={100}
-            height={100}
-            alt=" - dark sneaker"
-            aria-label=" - dark sneaker"
-            title=" - dark sneaker"
+            width={0}
+            height={0}
+            sizes="100px"
+            alt={"icon brand - " + category + " - dark sneaker"}
+            aria-label={"icon brand - " + category + " - dark sneaker"}
+            title={"icon brand - " + category + " - dark sneaker"}
             className="h-[100px] w-auto max-sm:h-10"
           />
           {category}

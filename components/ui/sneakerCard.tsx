@@ -29,7 +29,7 @@ export default function SneakerCard({
       <Image
         src={image}
         width={500}
-        height={500}
+        height={300}
         alt="image sneaker 1 - hot deals - dark sneaker"
         aria-label="image sneaker 1 - hot deals - dark sneaker"
         title="image sneaker 1 - hot deals - dark sneaker"
@@ -39,7 +39,7 @@ export default function SneakerCard({
         <div className="flex w-full items-center justify-between">
           <p className="text-2xl font-semibold">{name}</p>
           {discount > 0 && (
-            <div className="bg-red-500 px-2 py-1 rounded-full text-white text-sm">
+            <div className="bg-red-600 px-2 py-1 rounded-full text-sm text-white">
               - <span className="font-semibold">{discount}%</span>
             </div>
           )}
@@ -59,7 +59,7 @@ export default function SneakerCard({
               ${(price - (price * discount) / 100).toFixed(2)}
             </p>
           </div>
-          <button className="bg-fuchsia-300 px-3 py-2 font-semibold rounded-lg shadow-gray-300 shadow-lg cursor-pointer">
+          <button className="bg-fuchsia-300 px-3 py-2 font-semibold rounded-lg shadow-gray-300 shadow-lg cursor-pointer text-nowrap">
             Buy Now
           </button>
         </div>

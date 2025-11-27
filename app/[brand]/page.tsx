@@ -15,12 +15,11 @@ async function fetchSneakerByBrand({
   const params = new URLSearchParams();
   params.set("brand", brand);
   params.set("page", page);
-  params.set("limit", "10");
+  params.set("limit", "8");
 
   try {
-    const url = `${
-      process.env.NEXT_PUBLIC_SITE_URL
-    }/api/sneaker?${params.toString()}`;
+    const url = `${process.env.NEXT_PUBLIC_SITE_URL
+      }/api/sneaker?${params.toString()}`;
     const res = await fetch(url, { next: { revalidate: 60 } }); // ISR nếu bạn deploy rồi
 
     if (!res.ok) {
@@ -127,14 +126,13 @@ export async function generateMetadata({
 
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://dark-sneaker.vercel.app";
-  const url = `${baseUrl}/${brand}${page > 1 ? `?page=${page}` : ""}`;
+  const url = `${baseUrl}/${brand}${page > 1 ? `?page=${page}&limit=8` : ""}`;
 
   return {
     title: {
       template: `%s | ${info.name} Sneakers | Dark Sneaker`,
-      default: `${info.name} Sneakers ${page > 1 ? `— Page ${page}` : ""} | ${
-        info.slogan
-      } | Dark Sneaker`,
+      default: `${info.name} Sneakers ${page > 1 ? `— Page ${page}` : ""} | ${info.slogan
+        } | Dark Sneaker`,
     },
     description:
       page === 1
@@ -155,7 +153,7 @@ export async function generateMetadata({
 
     openGraph: {
       type: "website",
-      locale: "en_US",
+      locale: "vi_VN",
       url,
       siteName: "Dark Sneaker",
       title: `${info.name} Sneakers Collection | Dark Sneaker`,
@@ -220,9 +218,9 @@ export default async function Page({
         itemCount={listSneaker.length}
       />
 
-      <main className="w-full max-w-safe p-default min-h-screen overflow-hidden pt-20 flex flex-col gap-4 items-center">
+      <main className="w-full p-default min-h-screen overflow-hidden pt-20 flex flex-col gap-2 items-center">
         <h1 className="text-3xl font-bold capitalize">{brand || "brand"}</h1>
-        <div className="grid grid-cols-5 gap-4 px-20">
+        <div className="grid grid-cols-4 gap-5 px-4 max-w-safe max-xl:grid-cols-2 max-sm:grid-cols-1">
           {((listSneaker as Sneaker[]) || []).map((sneaker: Sneaker, index) => (
             <SneakerCard
               key={index}
@@ -235,7 +233,7 @@ export default async function Page({
             />
           ))}
         </div>
-        <div className="flex flex-nowrap w-fit mx-auto mt-4 gap-2">
+        <div className="flex flex-nowrap w-fit mx-auto gap-2">
           {Array.from({ length: totalPages }, (_, index) => index + 1).map(
             (pageItem) => (
               <Link
@@ -245,7 +243,7 @@ export default async function Page({
                 title={`page ${pageItem} - ${brand} - dark sneaker`}
                 key={pageItem}
                 className={
-                  "px-4 py-2 border border-fuchsia-200 rounded-lg  hover:scale-105 transition-all duration-300" +
+                  "px-4 py-1 border border-fuchsia-200 rounded-lg  hover:scale-105 transition-all duration-300" +
                   (pageItem.toString() === (page || "1")
                     ? " bg-fuchsia-200"
                     : "bg-white")

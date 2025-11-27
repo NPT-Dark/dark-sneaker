@@ -1,6 +1,5 @@
 // ...existing code...
 import { sneakerData } from "../../../data/home";
-
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const q = url.searchParams.get("search");

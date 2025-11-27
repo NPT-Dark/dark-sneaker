@@ -4,7 +4,7 @@ type SectionHomeWrapperProps = {
 }
 export default function SectionHomeWrapper({ children, id }: SectionHomeWrapperProps) {
     return (
-        <section className="min-h-screen w-full snap-start text-primary" id={id}>
+        <section className="min-h-screen w-full snap-start text-primary relative" id={id}>
             {children}
         </section>
     )
